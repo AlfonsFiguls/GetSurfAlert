@@ -13,7 +13,7 @@ class forecastEntry:
         self.wind = wind
         self.windDirection = windDirection
     def printForecast(self):
-        print('Date: {0}, size: {1}, swellDirection: {2}, wind: {3}, windDirection: {4}'.format(self.date, self.size, self.swellDirection, self.wind, self.windDirection))
+        print('Date: {0}, size: {1}, swellDirection: {2}, wind: {3}, windDirection: {4}'.format(self.date, self.size, self.swellDirection, round(self.wind, 2), self.windDirection))
 
 
 def filterSurfDay(day):
