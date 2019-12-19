@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import json
+import sys
 
 minimumWaveSize = 0.6
 minimumPeriodTime = 7
@@ -14,6 +16,8 @@ class forecastEntry:
         self.windDirection = windDirection
     def printForecast(self):
         print('Date: {0}, size: {1}, swellDirection: {2}, wind: {3}, windDirection: {4}'.format(self.date, self.size, self.swellDirection, round(self.wind, 2), self.windDirection))
+    def getForecast(self):
+        return 'Date: {0}, size: {1}, swellDirection: {2}, wind: {3}, windDirection: {4}\n'.format(self.date, self.size, self.swellDirection, round(self.wind, 2), self.windDirection)
 
 
 def filterSurfDay(day):
@@ -36,8 +40,13 @@ def formatSurfData(data):
         windDirection = re.findall(r"-([A-Z]*)", sData[3])[0]
         formatedData.append(forecastEntry(date, size, swellDirection, wind, windDirection)) #Appending forecast object data instead of a string for future work on the independent values.
     return formatedData
-        
 
+def sendTelegramMsg(data, telegram):
+    sendText = 'https://api.telegram.org/bot{0}/sendMessage?chat_id={1}&parse_mode=Markdown&text={2}'.format(telegram['token'], telegram['chat_id'], data)
+    requests.get(sendText)
+        
+telegram = open(sys.argv[1]) #Loading telegram configuration json
+telegram = json.load(telegram)
 
 r = requests.get("http://static.puertos.es/pred_simplificada/Predolas/tablas.html")
 soup = BeautifulSoup(r.text, 'html.parser')
@@ -59,4 +68,4 @@ for e in samples:
 filteredgoodDays = formatSurfData(goodSurfingDays)
 
 for e in filteredgoodDays:
-    e.printForecast()
+    sendTelegramMsg(e.getForecast(), telegram)
