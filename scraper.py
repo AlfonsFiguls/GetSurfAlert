@@ -12,6 +12,8 @@ class forecastEntry:
         self.swellDirection = swellDirection
         self.wind = wind
         self.windDirection = windDirection
+    def printForecast(self):
+        print('Date: {0}, size: {1}, swellDirection: {2}, wind: {3}, windDirection: {4}'.format(self.date, self.size, self.swellDirection, self.wind, self.windDirection))
 
 
 def filterSurfDay(day):
@@ -32,7 +34,7 @@ def formatSurfData(data):
         swellDirection = re.findall(r"-([A-Z]*)", sData[5])[0]
         wind = float(re.findall(r">([0-9\- :.]*)", sData[2])[0]) * 3.6
         windDirection = re.findall(r"-([A-Z]*)", sData[3])[0]
-        formatedData.append(forecastEntry(date, size, swellDirection, wind, windDirection))
+        formatedData.append(forecastEntry(date, size, swellDirection, wind, windDirection)) #Appending forecast object data instead of a string for future work on the independent values.
     return formatedData
         
 
@@ -56,4 +58,5 @@ for e in samples:
 
 filteredgoodDays = formatSurfData(goodSurfingDays)
 
-
+for e in filteredgoodDays:
+    e.printForecast()
