@@ -24,7 +24,7 @@ def formatSurfData(data):
     date = re.findall(r">([\d\- :]+)", sData[0])[0]
     size = re.findall(r"[\d.]+", sData[4])[0]
     periodWaves = float(re.findall(r"[\d.]+", sData[6])[0])
-    swellDirection = re.findall(r"-([\w]+)", sData[5])[0]
+    swellDirection = re.findall(r">([\w-]+)", sData[5])[0]
     wind = float(re.findall(r">([\d\- :]+)", sData[2])[0]) * 3.6
     windDirection = re.findall(r"-([\w]+)", sData[3])[0]
     return returnMsgToSend(date, size, periodWaves, swellDirection, wind, windDirection)
