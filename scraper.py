@@ -5,7 +5,7 @@ import json
 import sys
 
 minimumWaveSize = 0.6
-minimumPeriodTime = 7
+minimumPeriodTime = 6
 
 def returnMsgToSend(date, size, period, swellDirection, wind, windDirection):
     return f"Date: {date}, size: {size}m, period: {period}s, swellDirection: {swellDirection}, wind: {round(wind, 2)}Km/h, windDirection: {windDirection}"
@@ -14,7 +14,7 @@ def filterSurfDay(day):
     day = str(day).split("\n")
     sizeWaves = float(re.findall(r"[\d.]+", day[5])[0])
     periodWaves = float(re.findall(r"[\d.]+", day[7])[0])
-    if sizeWaves >= minimumWaveSize or periodWaves >= minimumPeriodTime:
+    if sizeWaves >= minimumWaveSize and periodWaves >= minimumPeriodTime:
         return True
     else:
         return False
